@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "AuthorMapper">
+    <resultMap id = "result" type = "com.bookmanagement.model.Author">
+        <id property = "id" column = "ID"/>
+        <result property = "name" column = "NAME"/>
+        <result property = "book_id" column = "BOOK_ID"/>
+    </resultMap>
+
+    <select id = "getAll" resultMap = "result">
+        SELECT * FROM Author;
+    </select>
+
+    <select id = "getById" parameterType = "int" resultMap = "result">
+        SELECT * FROM Author WHERE id = #{id};
+    </select>
+
+    <select id = "getByBookId" parameterType = "int" resultMap = "result">
+        SELECT * FROM Author WHERE book_id = #{id};
+    </select>
+
+    <insert id = "insert" parameterType = "com.bookmanagement.model.Author">
+        INSERT INTO AUTHOR (NAME, BOOK_ID) VALUES (#{name}, #{book_id});
+    </insert>
+
+    <update id = "update" parameterType = "com.bookmanagement.model.Author">
+        UPDATE AUTHOR SET NAME = #{name}, BOOK_ID = #{book_id} WHERE ID = #{id}
+    </update>
+</mapper>

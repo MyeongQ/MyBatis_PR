@@ -1,0 +1,33 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "BookMapper">
+    <resultMap id = "result" type = "com.bookmanagement.model.Book">
+        <result property = "id" column = "ID"/>
+        <result property = "title" column = "TITLE"/>
+        <result property = "author" column = "AUTHOR"/>
+        <result property = "genre" column = "GENRE"/>
+        <result property = "pagecount" column = "PAGECOUNT"/>
+    </resultMap>
+
+    <select id = "getAll" resultMap = "result">
+        SELECT * FROM Book;
+    </select>
+
+    <select id = "getById" parameterType = "int" resultMap = "result">
+        SELECT * FROM BOOK WHERE ID = #{id};
+    </select>
+
+    <insert id = "insert" parameterType = "com.bookmanagement.model.Book">
+        INSERT INTO BOOK (TITLE, AUTHOR, GENRE, PAGECOUNT ) VALUES (#{title}, #{author}, #{genre}, #{pagecount});
+    </insert>
+
+    <delete id = "deleteById" parameterType = "int">
+        DELETE from BOOK WHERE ID = #{id};
+    </delete>
+
+    <update id = "update" parameterType = "com.bookmanagement.model.Book">
+        UPDATE BOOK SET TITLE = #{title}, AUTHOR = #{author}, GENRE = #{genre}, PAGECOUNT = #{pagecount} WHERE ID = #{id}
+    </update>
+</mapper>

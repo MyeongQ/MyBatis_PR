@@ -1,0 +1,38 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "BookMapper">
+    <resultMap id = "result" type = "com.bookmanagement.model.Book">
+        <id property = "id" column = "ID"/>
+        <result property = "title" column = "TITLE"/>
+        <result property = "pagecount" column = "PAGECOUNT"/>
+        <association property = "genre" javaType = "com.bookmanagement.model.Genre" column = "GENRE_ID"
+                     select="GenreMapper.getById"/>
+        <collection property = "authors" ofType = "com.bookmanagement.model.Author" javaType="java.util.List">
+            <id property = "id" column = "author_id"/>
+            <result property = "name" column = "name"/>
+            <result property = "book_id" column = "book_id"/>
+        </collection>
+    </resultMap>
+
+    <select id = "getAll" resultMap = "result">
+        SELECT b.id, b.title, b.pagecount, b.genre_id, a.id as author_id, a.name, a.book_id FROM Book b LEFT JOIN Author a ON b.id = a.book_id;
+    </select>
+
+    <select id = "getById" parameterType = "int" resultMap = "result">
+        SELECT b.id, b.title, b.pagecount, b.genre_id, a.id as author_id, a.name, a.book_id FROM Book b LEFT JOIN Author a ON b.id = a.book_id WHERE b.id = #{id};
+    </select>
+
+    <insert id = "insert" parameterType = "com.bookmanagement.model.Book" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BOOK (TITLE, GENRE_ID, PAGECOUNT ) VALUES (#{title}, #{genre.genre_id}, #{pagecount});
+    </insert>
+
+    <delete id = "deleteById" parameterType = "int">
+        DELETE from BOOK WHERE ID = #{id};
+    </delete>
+
+    <update id = "update" parameterType = "com.bookmanagement.model.Book">
+        UPDATE BOOK SET TITLE = #{title}, GENRE_ID = #{genre.genre_id}, PAGECOUNT = #{pagecount} WHERE ID = #{id}
+    </update>
+</mapper>
